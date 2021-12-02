@@ -62,7 +62,27 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def create(request):
-    form = Auction_ListingsForm        
+    form = Auction_ListingsForm   
+    #    
+    if request.method == 'POST':
+        form = Auction_ListingsForm(request.POST)
+        if form.is_valid():             
+            title  = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            # if Active_Listing(title) is None):
+            # save data# kwargs={"description":description}
+            return HttpResponseRedirect(reverse("index"))
+        #     else:
+        #         return render(request,"create.html", {
+        #             "form": form,
+        #         })
+        else:
+            form = Auction_ListingsForm()
+    else:
+        form = Auction_ListingsForm()        
+       
     return render(request, "auctions/create.html", {
-        "form": form
+        "form" : form
     })
+    
+ 

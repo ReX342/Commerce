@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from .models import User, Auction_Listings
+from django import forms
 
 class Auction_ListingsForm(ModelForm):
     class Meta:

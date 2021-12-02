@@ -13,8 +13,8 @@ class Auction_Listings(models.Model):
     starting_bid = models.PositiveIntegerField()
     # add media in settings https://codedec.com/tutorials/upload-and-display-image-in-django/
     # None=True doesn't work; require
-    image_file = models.ImageField(upload_to='images')
-    image_url = models.URLField(max_length=200)
+    image_file = models.ImageField(upload_to='images', blank=True)
+    image_url = models.URLField(max_length=200, blank=True)
     def __str__(self):
         return self.title 
 
