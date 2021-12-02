@@ -8,19 +8,20 @@ class User(AbstractUser):
     pass
 
 class Auction_Listings(models.Model):
-    title: models.CharField(max_length=200)
-    description: models.CharField(max_length=20000)
-    starting_bid: models.PositiveIntegerField()
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=20000)
+    starting_bid = models.PositiveIntegerField()
     # add media in settings https://codedec.com/tutorials/upload-and-display-image-in-django/
-    image_file = models.ImageField(upload_to='images', None=True)
-    image_url = models.URLField(None=True)
+    # None=True doesn't work; require
+    image_file = models.ImageField(upload_to='images')
+    image_url = models.URLField(max_length=200)
     def __str__(self):
         return self.title 
 
 class Bids(models.Model):
     # Maybe multiple relationships instead of parents/foreignkey?
-    starting_bid: models.PositiveIntegerField()
-    current_bid: models.PositiveIntegerField()
+    starting_bid = models.PositiveIntegerField()
+    current_bid = models.PositiveIntegerField()
     def __str__(self):
     		return self.starting_bid
     
