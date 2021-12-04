@@ -10,7 +10,7 @@ class User(AbstractUser):
 class Auction_Listings(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=20000)
-    starting_bid = models.PositiveIntegerField()
+    starting_bid = models.ForeignKey('Bids', on_delete=models.CASCADE, related_name='start_bid') 
     # add media in settings https://codedec.com/tutorials/upload-and-display-image-in-django/
     # None=True doesn't work; require
     image_file = models.ImageField(upload_to='images', blank=True)

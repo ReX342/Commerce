@@ -8,12 +8,12 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    TODO
-
-    {% for listing in listings %}
-    <h1> {{ listing.title }}</h1>
+    TODO: Make listings clickable
+    <ul>
+    {% for listing in listings %} 
+    <h1> <li>{{ listing.title }}</li></h1>    
     <p> {{ listing.description }} </p>
-    {{ listing.startin_bid }}
+    <h2> {{ listing.startin_bid }} </h3>
     {% if listing.image_url %}
     {{ listing.image_url }}
     {% endif %}
@@ -21,6 +21,7 @@
     <img src="media/{{ listing.image_file }}">
     {% endif %}
 
+    
     {% endfor %}
-
+    <ul>
 {% endblock %}
