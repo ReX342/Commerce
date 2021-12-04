@@ -12,9 +12,9 @@ from django.urls import reverse
 # queryset = get_user_model().objects.all()
 
 
-
-from .models import Auction_Listings
+from .models import Auction_Listings, User
 from .forms import Auction_ListingsForm
+
 
 def index(request):
     listings = Auction_Listings.objects.all()    

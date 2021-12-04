@@ -5,4 +5,4 @@ from django import forms
 class Auction_ListingsForm(ModelForm):
     class Meta:
         model = Auction_Listings
-        fields = ['title', 'description', 'starting_bid', 'image_file', 'image_url' ]
+        fields = ['title', 'description', 'starting_bid', 'image_file', 'image_url', 'quantity' ]

@@ -6,26 +6,6 @@ import os
 
 class User(AbstractUser):
     pass
-# first of three halves: https://auction-website.readthedocs.io/en/latest/4.model-layer.html
-class User2(models.Model):
-    username = models.CharField(max_length=45)
-    password = models.CharField(max_length=45)
-    email = models.EmailField()
-    # AbstractUser decleration:
-    #username_validator: UnicodeUsernameValidator
-    # calling on these added lines in my register template
-    password = models.CharField(max_length=200)
-    confirmation = models.CharField(max_length=200)
-    balance = models.DecimalField(max_digits=6, decimal_places=2)
-    firstname = models.CharField(max_length=56)
-    lastname = models.CharField(max_length=45)
-    cellphone = models.CharField(max_length=14)
-    address = models.CharField(max_length=255)
-    town = models.CharField(max_length=45)
-    post_code = models.CharField(max_length=45)
-    country = models.CharField(max_length=45)
-    def __str__(self):
-        return "(" + self.username + ", " + self.email + ")"
 
 class Auction_Listings(models.Model):
     title = models.CharField(max_length=200)
@@ -37,7 +17,7 @@ class Auction_Listings(models.Model):
     image_file = models.ImageField(upload_to='images', blank=True)
     image_url = models.URLField(max_length=200, blank=True)
     #https://auction-website.readthedocs.io/en/latest/4.model-layer.html
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField(null=True, blank=True)
     CATEGORIES = (
         ('LAP', 'Laptop'),
         ('CON', 'Console'),
@@ -46,7 +26,7 @@ class Auction_Listings(models.Model):
         ('TEL', 'TV')
        )
     category = models.CharField(
-        max_length=20,
+        max_length=45,
         choices=CATEGORIES
     )
     date_posted = models.DateTimeField(auto_now_add=True, blank=True)
