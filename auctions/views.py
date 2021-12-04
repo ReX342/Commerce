@@ -14,11 +14,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Auction_Listings, User
 from .forms import Auction_ListingsForm
+from django.contrib.auth.decorators import login_required
 
 class LoginRequiredView(LoginRequiredMixin, TemplateView):
     
     template_name = "page.html"
-    redirect_field_name = '/admin/login/?next=/admin/'
+#    redirect_field_name = '/admin/login/?next=/admin/'
     
 def index(request):
     listings = Auction_Listings.objects.all()    
@@ -80,6 +81,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
 def create(request):
     form = Auction_ListingsForm   
     #    
