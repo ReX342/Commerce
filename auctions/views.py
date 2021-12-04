@@ -10,12 +10,16 @@ from django.urls import reverse
 # from django.contrib.auth import get_user_model
 # user = get_user_model().objects.get(pk=uid)
 # queryset = get_user_model().objects.all()
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import TemplateView
 from .models import Auction_Listings, User
 from .forms import Auction_ListingsForm
 
-
+class LoginRequiredView(LoginRequiredMixin, TemplateView):
+    
+    template_name = "page.html"
+    redirect_field_name = '/admin/login/?next=/admin/'
+    
 def index(request):
     listings = Auction_Listings.objects.all()    
     #lists = Auction_Listings.objects.open()

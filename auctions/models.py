@@ -46,25 +46,3 @@ class comments_AL(models.Model):
     #foreignkey: on delete CASCADE
     # Auction_Listings is parent
     pass
-# other half of https://auction-website.readthedocs.io/en/latest/4.model-layer.html
-class Auction(models.Model):
-    product_id = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
-    number_of_bids = models.IntegerField()
-    time_starting = models.DateTimeField()
-    time_ending = models.DateTimeField()
-
-class Watchlist(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-
-class Bid(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    bid_time = models.DateTimeField()
-
-# We might be infiltrating error messages here instead of chat messages but whatever.    
-class Chat(models.Model):
-    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    time_sent = models.DateTimeField()
