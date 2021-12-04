@@ -3,5 +3,22 @@
 {% block body %}
     <h2>Active Listings</h2>
 
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
     TODO
+
+    {% for listing in listings %}
+    {{ listing }}
+    <h1> {{ listing.title }}</h1>
+    <p> {{ listing.description }} </p>
+    {{ listing.startin_bid }}
+    {{ listing.image_url }}
+    {{ listing.image_file }}
+    <img src="media/{{ listing.image_file }}">
+
+    {% endfor %}
+
 {% endblock %}

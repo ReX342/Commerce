@@ -4,10 +4,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from .models import Auction_Listings
 from .forms import Auction_ListingsForm
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = Auction_Listings.objects.all()    
+    #lists = Auction_Listings.objects.open()
+    return render(request, "auctions/index.html", { 
+                                                   "listings":listings})
 
 
 def login_view(request):
@@ -65,17 +69,16 @@ def create(request):
     form = Auction_ListingsForm   
     #    
     if request.method == 'POST':
-        form = Auction_ListingsForm(request.POST)
+        form = Auction_ListingsForm(request.POST, request.FILES)
         if form.is_valid():             
             title  = form.cleaned_data["title"]
             description = form.cleaned_data["description"]
-            # if Active_Listing(title) is None):
-            # save data# kwargs={"description":description}
+            starting_bid = form.cleaned_data["starting_bid"]
+            image_url = form.cleaned_data["image_url"]
+            image_file = form.cleaned_data["image_file"]            
+            listing = Auction_Listings(title=title, description=description, starting_bid=starting_bid, image_url=image_url, image_file=image_file)
+            listing.save()            
             return HttpResponseRedirect(reverse("index"))
-        #     else:
-        #         return render(request,"create.html", {
-        #             "form": form,
-        #         })
         else:
             form = Auction_ListingsForm()
     else:
