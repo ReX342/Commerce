@@ -26,7 +26,7 @@ def index(request):
     #lists = Auction_Listings.objects.open()
     return render(request, "auctions/index.html", { 
                                                    "listings":listings,
-                                                   "auctions_auction_listings.quantity": 1
+                                                   #"auctions_auction_listings.quantity": 1
                                                    })
 
 
@@ -105,4 +105,9 @@ def create(request):
         "form" : form
     })
     
- 
+def detail_listing(request, id):
+    listing = Auction_Listings.objects.get(id=id)    
+    #lists = Auction_Listings.objects.open()
+    return render(request, "auctions/listing.html", { 
+                                                   "listing":listing
+                                                   })

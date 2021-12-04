@@ -10,7 +10,6 @@
 
     TODO: Clickable Listing template here.
     <ul>
-    {% for listing in listings %} 
     <h1> <li>{{ listing.title }}</li></h1>    
     <p> {{ listing.description }} </p>
     <h2> {{ listing.startin_bid }} </h3>
@@ -18,10 +17,7 @@
     {{ listing.image_url }}
     {% endif %}
     {% if listing.image_file %}
-    <img src="media/{{ listing.image_file }}">
-    {% endif %}
-
-    
-    {% endfor %}
+    <img src="/media/{{ listing.image_file }}">
+    {% endif %}    
     <ul>
 {% endblock %}
