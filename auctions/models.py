@@ -4,13 +4,18 @@ from django.core.files import File
 import os
 
 
-# class User(AbstractUser):
-#     pass
+class User(AbstractUser):
+    pass
 # first of three halves: https://auction-website.readthedocs.io/en/latest/4.model-layer.html
-class User(models.Model):
+class User2(models.Model):
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
     email = models.EmailField()
+    # AbstractUser decleration:
+    #username_validator: UnicodeUsernameValidator
+    # calling on these added lines in my register template
+    password = models.CharField(max_length=200)
+    confirmation = models.CharField(max_length=200)
     balance = models.DecimalField(max_digits=6, decimal_places=2)
     firstname = models.CharField(max_length=56)
     lastname = models.CharField(max_length=45)
@@ -19,6 +24,8 @@ class User(models.Model):
     town = models.CharField(max_length=45)
     post_code = models.CharField(max_length=45)
     country = models.CharField(max_length=45)
+    def __str__(self):
+        return "(" + self.username + ", " + self.email + ")"
 
 class Auction_Listings(models.Model):
     title = models.CharField(max_length=200)
@@ -32,11 +39,11 @@ class Auction_Listings(models.Model):
     #https://auction-website.readthedocs.io/en/latest/4.model-layer.html
     quantity = models.IntegerField()
     CATEGORIES = (
-           ('LAP', 'Laptop'),
-           ('CON', 'Console'),
-           ('GAD', 'Gadget'),
-           ('GAM', 'Game'),
-           ('TEL', 'TV')
+        ('LAP', 'Laptop'),
+        ('CON', 'Console'),
+        ('GAD', 'Gadget'),
+        ('GAM', 'Game'),
+        ('TEL', 'TV')
        )
     category = models.CharField(
         max_length=20,
@@ -51,7 +58,7 @@ class Bids(models.Model):
     starting_bid = models.PositiveIntegerField()
     current_bid = models.PositiveIntegerField()
     def __str__(self):
-    		return self.starting_bid
+        return self.starting_bid
     
 
 class comments_AL(models.Model):
@@ -61,23 +68,23 @@ class comments_AL(models.Model):
     pass
 # other half of https://auction-website.readthedocs.io/en/latest/4.model-layer.html
 class Auction(models.Model):
-       product_id = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
-       number_of_bids = models.IntegerField()
-       time_starting = models.DateTimeField()
-       time_ending = models.DateTimeField()
+    product_id = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
+    number_of_bids = models.IntegerField()
+    time_starting = models.DateTimeField()
+    time_ending = models.DateTimeField()
 
 class Watchlist(models.Model):
-       user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-       auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
 
 class Bid(models.Model):
-       user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-       auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-       bid_time = models.DateTimeField()
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    bid_time = models.DateTimeField()
 
 # We might be infiltrating error messages here instead of chat messages but whatever.    
 class Chat(models.Model):
-       auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-       user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-       message = models.TextField()
-       time_sent = models.DateTimeField()
+    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    time_sent = models.DateTimeField()

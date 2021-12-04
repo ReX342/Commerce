@@ -3,6 +3,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+# fixing online code copy/paste
+#from django.contrib.auth.models import User
+# another attempted fix: 
+# # https://stackoverflow.com/questions/17873855/manager-isnt-available-user-has-been-swapped-for-pet-person
+# from django.contrib.auth import get_user_model
+# user = get_user_model().objects.get(pk=uid)
+# queryset = get_user_model().objects.all()
+
+
 
 from .models import Auction_Listings
 from .forms import Auction_ListingsForm
