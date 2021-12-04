@@ -3,16 +3,26 @@
 {% block body %}
     <h2>All Details of Selected Listing</h2>
 
-
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
-
-    TODO: Clickable Listing template here.
     <ul>
     <h1> <li>{{ listing.title }}</li></h1>    
     <p> {{ listing.description }} </p>
     <h2> {{ listing.startin_bid }} </h3>
+
+    {% if listing.quantity %}
+    Quantity: {{ listing.quantity}}
+    {% endif %}
+
+    {% if listing.category %}
+    Category: {{ listings.category }}
+    {% endif %}
+    <hr>
+    Starting bid was: {{ listing.starting_bid }}
+    <hr>
+    First Listed on: {{ listing.date_posted }}
+
     {% if listing.image_url %}
     {{ listing.image_url }}
     {% endif %}

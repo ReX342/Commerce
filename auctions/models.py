@@ -35,7 +35,7 @@ class Auction_Listings(models.Model):
 
 class Bids(models.Model):
     # Maybe multiple relationships instead of parents/foreignkey?
-    starting_bid = models.PositiveIntegerField()
+    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='start_bid') 
     current_bid = models.PositiveIntegerField()
     def __str__(self):
         return self.starting_bid
