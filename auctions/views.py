@@ -11,7 +11,9 @@ def index(request):
     listings = Auction_Listings.objects.all()    
     #lists = Auction_Listings.objects.open()
     return render(request, "auctions/index.html", { 
-                                                   "listings":listings})
+                                                   "listings":listings,
+                                                   "auctions_auction_listings.quantity": 1
+                                                   })
 
 
 def login_view(request):
