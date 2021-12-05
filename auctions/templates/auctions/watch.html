@@ -22,13 +22,11 @@
     Starting bid was: {{ listing.starting_bid }}
     <hr>
     First Listed on: {{ listing.date_posted }}
-    <hr>
-    Add button to add to watchlist here:
-    <br>
-    form action="% url ''  %" method="post" enctype="multipart/form-data"
-        % csrf_token %
-        input class="btn btn-primary" type="submit" value="watch"
-    /form
+
+    <form action="{% url 'watch' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input class="btn btn-primary" type="submit" value="watch">
+    </form>
 
 
     {% if listing.image_url %}

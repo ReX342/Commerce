@@ -3,6 +3,8 @@ from django.db import models
 from django.core.files import File
 import os
 
+from django.db.models.fields import DateTimeField
+
 
 class User(AbstractUser):
     pass
@@ -34,15 +36,19 @@ class Auction_Listings(models.Model):
         return self.title 
 
 class Bids(models.Model):
-    # Maybe multiple relationships instead of parents/foreignkey?
-    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='start_bid') 
+    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='start_bid', primary_key=True) 
+    # User on_delete=models.CASCADE
     current_bid = models.PositiveIntegerField()
     def __str__(self):
         return self.starting_bid
     
-
 class comments_AL(models.Model):
-    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list') 
+    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list', primary_key=True) 
     #foreignkey: on delete CASCADE
     # Auction_Listings is parent
     pass
+
+class WatchList(models.Model):
+    auction = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, primary_key=True ) 
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True)

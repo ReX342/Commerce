@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 # fixing online code copy/paste
 #from django.contrib.auth.models import User
@@ -12,7 +12,7 @@ from django.urls import reverse
 # queryset = get_user_model().objects.all()
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
-from .models import Auction_Listings, User
+from .models import Auction_Listings, User, WatchList
 from .forms import Auction_ListingsForm
 from django.contrib.auth.decorators import login_required
 
@@ -109,5 +109,14 @@ def detail_listing(request, id):
     listing = Auction_Listings.objects.get(id=id)    
     #lists = Auction_Listings.objects.open()
     return render(request, "auctions/listing.html", { 
-                                                   "listing":listing
+                                                   "listing": listing
                                                    })
+# def watch(request, auction):
+#     watch = WatchList.objects.get(auction=auction)
+#     if request.method == 'POST':
+#         form = WatchList(request.POST)
+#         #Watchlist.user_id
+#         return redirect('auctions:watch', auction=auction)
+#     return render(request, "auctions/watch.html", { 
+#                                                    "listing": watch
+#                                                    })

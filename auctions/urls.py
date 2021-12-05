@@ -13,4 +13,5 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("create", views.create, name="create"),
     path("auction/<int:id>", views.detail_listing, name="detail"),
+    #path("watch/<str:auction>/", views.watch, name="watch")
 ]
