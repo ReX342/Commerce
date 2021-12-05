@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Auction_Listings, User, WatchList
-from .forms import Auction_ListingsForm
+from .forms import Auction_ListingsForm, WatchListForm
 from django.contrib.auth.decorators import login_required
 
 class LoginRequiredView(LoginRequiredMixin, TemplateView):
@@ -120,3 +120,53 @@ def detail_listing(request, id):
 #     return render(request, "auctions/watch.html", { 
 #                                                    "listing": watch
 #                                                    })
+def watch(request, id):
+    listing = Auction_Listings.objects.get(id=id)    
+    #lists = Auction_Listings.objects.open()
+    form = Auction_ListingsForm   
+    #    
+    if request.method == 'POST':
+        form = WatchListForm(request.POST, request.FILES)
+        if form.is_valid():             
+            watching  = True         
+            listing = WatchListForm(watching=watching)
+            listing.save()            
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            form = WatchListForm()
+    else:
+        form = WatchListForm()        
+       
+    return render(request, "auctions/watch.html", {
+        "form" : form
+    })
+
+    return render(request, "auctions/watch.html", { 
+                                                "watch": watch
+                                                })
+    
+def watchlist(request):
+    listings = Auction_Listings.objects.all()
+    
+    watchlist = WatchList.watching    
+    #lists = Auction_Listings.objects.open()
+    return render(request, "auctions/watchlist.html", { 
+                                                   "listings":listings,
+                                                   #"auctions_auction_listings.quantity": 1
+                                                    "watchlist": watchlist,
+                                                   })
+
+def add_watch(request, id):
+    #auction = id
+    if request.method == 'POST':
+    #    if WatchList.objects.filter(user=request.user, watching=True).exists():
+        watchlist = True
+    #        watching = WatchList.watching
+#        watch_form = WatchList.objects.filter(watching=True)
+        #watch_form = True            
+        # 
+        watch_form = WatchListForm(watch_form=watchlist)
+
+        WatchListForm.save()
+        form = WatchList(request.POST)
+    return HttpResponseRedirect(reverse("watchlist"))

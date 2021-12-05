@@ -36,19 +36,20 @@ class Auction_Listings(models.Model):
         return self.title 
 
 class Bids(models.Model):
-    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='start_bid', primary_key=True) 
+    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, unique=True, related_name='start_bid') 
     # User on_delete=models.CASCADE
     current_bid = models.PositiveIntegerField()
     def __str__(self):
         return self.starting_bid
     
 class comments_AL(models.Model):
-    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list', primary_key=True) 
+    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list', unique=True) 
     #foreignkey: on delete CASCADE
     # Auction_Listings is parent
     pass
 
 class WatchList(models.Model):
-    auction = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, primary_key=True ) 
+    auction = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, unique=True) 
     user = models.ForeignKey('User', on_delete=models.CASCADE)
+    watching = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True, blank=True)
