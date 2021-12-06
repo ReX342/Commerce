@@ -21,7 +21,11 @@ class Auction_Listings(models.Model):
         ('CON', 'Console'),
         ('GAD', 'Gadget'),
         ('GAM', 'Game'),
-        ('TEL', 'TV')
+        ('TEL', 'TV'),
+        ('FAS', 'Fashion'),
+        ('TOY', 'Toys'),
+        ('ELE', 'Electronics'),
+        ('HOM', 'Home')
        )
     category = models.CharField(
         max_length=45,

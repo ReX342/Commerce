@@ -20,12 +20,24 @@
     {% endif %}
     <hr>
     Starting bid was: {{ listing.starting_bid }}
+    <br>
+    {% if inactive %}
+    {% else %}
+    Bid 
+    {{ bids.as_p }}
+    {{ bids }}
+        <form action="{% url 'bid' listing.id %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-secondary" type="submit" value="Bid on this">
+        </form>
+
+        else: You have to bid more than the initial bid.
+
+    {% endif %}
     <hr>
     First Listed on: {{ listing.date_posted }}
     <hr>
-    Add button to add to watchlist here:
     <br> 
-
     {% if listing in all_wish %}
     <form action="{% url 'unwatch_this' listing.id %}" method="post">
     {% csrf_token %}

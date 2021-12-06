@@ -3,8 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Auction_Listings, User
-from .forms import Auction_ListingsForm, WatchListForm
+from .models import Auction_Listings, User, Bids
+from .forms import Auction_ListingsForm, WatchListForm, BidsForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -158,4 +158,26 @@ def unwatch_this(request,id):
     logged_in_user = User.objects.get(id=request.user.id)
     listing_id = id
     logged_in_user.wishlisted.remove(Auction_Listings.objects.get(id=listing_id))         
-    return HttpResponseRedirect(reverse("watchlist"))    
+    return HttpResponseRedirect(reverse("watchlist"))
+
+@login_required
+def bid(request, id):
+    AL = Auction_ListingsForm   
+    bids = BidsForm()
+    if request.method == 'POST':
+        bids = BidsForm(request.POST)
+        print(bids)
+        current_bid = bids.cleaned_data["current_bid"]
+
+        if current_bid > AL.starting_bid: 
+            if bids.is_valid():             
+                bids.save()            
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            bids = BidsForm()
+    else:
+        bids = BidsForm()        
+       
+    return render(request, "auctions/watch.html", {
+        "bids" : bids
+    })
