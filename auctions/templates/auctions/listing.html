@@ -24,12 +24,8 @@
     {% if inactive %}
     {% else %}
     Bid 
-    {{ bids.as_p }}
-    {{ bids }}
-        <form action="{% url 'bid' listing.id %}" method="post">
+        <form action="{% url 'bids' listing.id %}" method="post">
         {% csrf_token %}
-        {{ bids.as_p }}
-        {{ bids }}
         <div class="form-group">
             <input class="form-control" autofocus type="number" name="current_bid" placeholder="How much do you want to bid?">
         </div>

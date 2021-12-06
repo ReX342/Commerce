@@ -142,6 +142,31 @@ def unwatch_this(request,id):
     return HttpResponseRedirect(reverse("watchlist"))
 
 @login_required
+def bids(request, id):
+    # get Auction_Listings.current_bid
+    # in a nice form where user(id=id) can update
+    logged_in_user = User.objects.get(id=request.user.id)
+    AL = Auction_ListingsForm   
+    bids = BidsForm()
+    st_bid = Bids
+    if request.method == 'POST':
+        bids = BidsForm(request.POST)
+        current_bid = AL.current_bid
+        starting_bid = AL.starting_bid
+
+        if current_bid > starting_bid:
+            if bids.is_valid():             
+                bids.save()            
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            bids = BidsForm()
+       
+    return render(request, "auctions/watch.html", {
+        "bids" : bids
+    })
+
+#I give up
+@login_required
 def bid(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
     AL = Auction_ListingsForm   
