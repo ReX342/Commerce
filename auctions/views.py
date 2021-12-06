@@ -90,10 +90,12 @@ def create(request):
     })
     
 def detail_listing(request, id):
-    listing = Auction_Listings.objects.get(id=id)    
-    #lists = Auction_Listings.objects.open()
+    listing = Auction_Listings.objects.get(id=id)
+    logged_in_user = User.objects.get(id=request.user.id)
+    all_wish = logged_in_user.wishlisted.all()    
     return render(request, "auctions/listing.html", { 
-                                                   "listing": listing
+                                                   "listing": listing,
+                                                   "all_wish": all_wish
                                                    })
 
 def watch(request, id):
@@ -150,4 +152,10 @@ def watch_this(request,id):
     listing_id = id
     logged_in_user.wishlisted.add(Auction_Listings.objects.get(id=listing_id))         
     return HttpResponseRedirect(reverse("watchlist"))
-    
+  
+@login_required
+def unwatch_this(request,id):
+    logged_in_user = User.objects.get(id=request.user.id)
+    listing_id = id
+    logged_in_user.wishlisted.remove(Auction_Listings.objects.get(id=listing_id))         
+    return HttpResponseRedirect(reverse("watchlist"))    

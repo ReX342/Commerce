@@ -14,5 +14,6 @@ urlpatterns = [
     path("add_watch/<int:id>", views.add_watch, name="add_watch"),
     path("watchmany", views.watchmany, name="watchmany"),
     path("remove_watch/<int:id>", views.remove_watch, name="remove_watch"),
-    path("watch_this/<int:id>", views.watch_this, name="watch_this")
+    path("watch_this/<int:id>", views.watch_this, name="watch_this"),
+    path("unwatch_this/<int:id>", views.unwatch_this, name="unwatch_this")
 ]

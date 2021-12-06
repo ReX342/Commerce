@@ -24,12 +24,21 @@
     First Listed on: {{ listing.date_posted }}
     <hr>
     Add button to add to watchlist here:
-    <br>
- 
-    <form action="{% url 'watch_this' listing.id %}" method="post">
-        {% csrf_token %}
-        <input class="btn btn-primary" type="submit" value="Watch this">
+    <br> 
+
+    {% if listing in all_wish %}
+    <form action="{% url 'unwatch_this' listing.id %}" method="post">
+    {% csrf_token %}
+    <input class="btn btn-secondary" type="submit" value="Remove from watchlist">
     </form>
+    {% else %}
+        <form action="{% url 'watch_this' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{listing.id}}">
+        <input class="btn btn-primary" type="submit" value="Add to watchlist">
+    </form>
+    {% endif %}
+
 
     {% if listing.image_url %}
     {{ listing.image_url }}
