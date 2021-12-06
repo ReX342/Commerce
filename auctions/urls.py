@@ -6,17 +6,12 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("login", views.login_view, name="login"),
-    #LoginRequiredView
-    #path('page/', LoginRequiredView.as_view()),
-    path('page/', login_required(views.LoginRequiredView.as_view(), login_url='register')),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("create", views.create, name="create"),
     path("auction/<int:id>", views.detail_listing, name="detail"),
-    #path("watch/<str:auction>/", views.watch, name="watch"),
     path("watchlist/", views.watchlist, name="watchlist"),
     path("add_watch/<int:id>", views.add_watch, name="add_watch"),
-    # https://github.dev/Sumanth-Talluri/CS50w-Commerce/blob/master/auctions/views.py
-    path("addtowatchlist/<int:product_id>",
-         views.addtowatchlist, name="addtowatchlist"),
+    path("watchmany", views.watchmany, name="watchmany"),
+    path("remove_watch/<int:id>", views.remove_watch, name="remove_watch")
 ]
