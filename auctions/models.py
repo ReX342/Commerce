@@ -3,11 +3,7 @@ from django.db import models
 from django.core.files import File
 import os
 
-from django.db.models.fields import DateTimeField
-
-
-class User(AbstractUser):
-    pass
+#from django.db.models.fields import DateTimeFields
 
 class Auction_Listings(models.Model):
     title = models.CharField(max_length=200)
@@ -32,24 +28,15 @@ class Auction_Listings(models.Model):
         choices=CATEGORIES
     )
     date_posted = models.DateTimeField(auto_now_add=True, blank=True)
+    class Meta:
+        ordering = ['title']
     def __str__(self):
         return self.title 
-
-class Bids(models.Model):
-    starting_bid = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, unique=True, related_name='start_bid') 
-    # User on_delete=models.CASCADE
-    current_bid = models.PositiveIntegerField()
-    def __str__(self):
-        return self.starting_bid
     
-class comments_AL(models.Model):
-    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list', unique=True) 
-    #foreignkey: on delete CASCADE
-    # Auction_Listings is parent
-    pass
-
-class WatchList(models.Model):
-    auction = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, unique=True) 
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-    watching = models.BooleanField(default=False)
-    date_added = models.DateTimeField(auto_now_add=True, blank=True)
+    
+class User(AbstractUser):
+    wishlisted = models.ManyToManyField(Auction_Listings)
+    def __str__(self):
+        return self.username 
+    def __repr__(self):
+        return f"<User '{self.username}>"

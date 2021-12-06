@@ -11,21 +11,12 @@
     TODO: Make listings clickable: So they're added or removed Watchlist
 
     Only let items on watchlist appear (instead of everything like index.html)
-    {{ watchlist }}
-    {{ watchlist.watching }}
-    {{ watching }}
-    {{ watch_form }}
     <ul>
     {% for listing in listings %} 
 
         {% if watchlist %}
-        {{ watch_form }}
-        {{ watchlist }}
-        {{ watchlist.watching }}
-        {{ watching }}
             <h1> <li>{{ listing.title }}</li></h1> 
             <h1> <li> <a href="{% url 'detail' listing.id %}"> {{ listing.title }} </a></li></h1> 
-
 
             <form action="{% url 'add_watch' listing.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -33,10 +24,8 @@
                 <input class="btn btn-primary" type="submit" value="add to watchlist">
 
                 <input class="btn btn-primary" type="submit" value="Remove from watchlist">
-
             </form>
         
-
             <p> {{ listing.description }} </p>
             <h2> {{ listing.startin_bid }} </h3>
             {% if listing.image_url %}
@@ -45,7 +34,7 @@
             {% if listing.image_file %}
             <img src="media/{{ listing.image_file }}">
             {% endif %}
-
+                
         {% endif %}    
 
     {% endfor %}
