@@ -9,7 +9,7 @@ class Auction_Listings(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=20000)
     starting_bid = models.PositiveIntegerField()
-    current_bid = models.PositiveIntegerField()
+    #current_bid = models.PositiveIntegerField()
     image_file = models.ImageField(upload_to='images', blank=True)
     image_url = models.URLField(max_length=200, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True)

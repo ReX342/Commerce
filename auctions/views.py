@@ -165,23 +165,21 @@ def bids(request, id):
         "bids" : bids
     })
 
-#I give up
+#I give up: listing.html url bids as alternative
 @login_required
 def bid(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
     AL = Auction_ListingsForm   
     bids = BidsForm()
     st_bid = Bids
+    
+    bids = BidsForm(request.POST)
+    current_bid = BidsForm.current_bid
+    current = Bids.objects.get(current_bid=request.current_bid)
     if request.method == 'POST':
         bids = BidsForm(request.POST)
-        print(bids)
-        print(st_bid)
-        print(st_bid.starting_bid)
-        #current_bid = bids.cleaned_data["current_bid"]
-
         current_bid = st_bid.current_bid
         starting_bid = st_bid.starting_bid
-
         if current_bid > starting_bid:
             if bids.is_valid():             
                 bids.save()            
