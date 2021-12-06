@@ -115,12 +115,11 @@ def watch(request, id):
 
 
 def watchlist(request):
-    listings = Auction_Listings.objects.all()
-    watchlist = WatchListForm.watch_forms
+    logged_in_user = User.objects.get(id=request.user.id)
+    all_wish = logged_in_user.wishlisted.all()
     return render(request, "auctions/watchlist.html", { 
-                                                   "listings":listings,
-                                                    "watchlist": watchlist,
-                                                   })
+                                                "listings": all_wish,
+                                                })
 @login_required
 def add_watch(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
@@ -143,4 +142,12 @@ def remove_watch(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
     listing_id = id
     logged_in_user.wishlisted.remove(Auction_Listings.objects.get(id=listing_id))         
-    return HttpResponseRedirect(reverse("watchmany"))
+    return HttpResponseRedirect(reverse("watchlist"))
+
+@login_required
+def watch_this(request,id):
+    logged_in_user = User.objects.get(id=request.user.id)
+    listing_id = id
+    logged_in_user.wishlisted.add(Auction_Listings.objects.get(id=listing_id))         
+    return HttpResponseRedirect(reverse("watchlist"))
+    

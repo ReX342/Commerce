@@ -25,11 +25,11 @@
     <hr>
     Add button to add to watchlist here:
     <br>
-    form action="% url ''  %" method="post" enctype="multipart/form-data"
-        % csrf_token %
-        input class="btn btn-primary" type="submit" value="watch"
-    /form
-
+ 
+    <form action="{% url 'watch_this' listing.id %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-primary" type="submit" value="Watch this">
+    </form>
 
     {% if listing.image_url %}
     {{ listing.image_url }}

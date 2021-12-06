@@ -5,13 +5,13 @@
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
-    TODO: Make listings clickable
+    TODO: Make listings clickable damn
     <ul>
     {% for listing in listings %} 
     {% if listing in all_wish %}
     <form action="{% url 'remove_watch' listing.id %}" method="post">
     {% csrf_token %}
-    <input class="btn btn-primary" type="submit" value="Remove from watchlist">
+    <input class="btn btn-secondary" type="submit" value="Remove from watchlist">
     </form>
     {% else %}
         <form action="{% url 'add_watch' listing.id %}" method="post">
