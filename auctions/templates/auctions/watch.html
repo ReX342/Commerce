@@ -23,9 +23,9 @@
     <hr>
     First Listed on: {{ listing.date_posted }}
 
-    <form action="{% url 'watch' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'watch' %}" method="post">
         {% csrf_token %}
-        <input class="btn btn-primary" type="submit" value="watch">
+        <input class="btn btn-primary" type="submit" value="atch">
     </form>
 
     {% if listing.image_url %}
