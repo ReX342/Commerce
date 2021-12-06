@@ -152,7 +152,9 @@ def bid(request, id):
         print(bids)
         print(st_bid)
         print(st_bid.starting_bid)
-        current_bid = bids.cleaned_data["current_bid"]
+        #current_bid = bids.cleaned_data["current_bid"]
+
+        current_bid = st_bid.current_bid
         starting_bid = st_bid.starting_bid
 
         if current_bid > starting_bid:
