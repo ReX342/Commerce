@@ -1,12 +1,22 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>Active Listings (including Watchlist overview)</h2>
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
     <ul>
     {% for listing in listings %} 
+    <h1> <li> <a href="{% url 'detail' listing.id %}"> {{ listing.title }} </a></li></h1> 
+    <p> {{ listing.description }} </p>
+    <h2> {{ listing.startin_bid }} </h3>
+    {% if listing.image_url %}
+    {{ listing.image_url }}
+    {% endif %}
+    {% if listing.image_file %}
+    <img src="media/{{ listing.image_file }}">
+    {% endif %}
+
     {% if listing in all_wish %}
     <form action="{% url 'remove_watch' listing.id %}" method="post">
     {% csrf_token %}
@@ -20,17 +30,6 @@
     </form>
     This item is not on your watchlist
     {% endif %}
-    <h1> <li>{{ listing.title }}</li></h1> 
-    <h1> <li> <a href="{% url 'detail' listing.id %}"> {{ listing.title }} </a></li></h1> 
-    <p> {{ listing.description }} </p>
-    <h2> {{ listing.startin_bid }} </h3>
-    {% if listing.image_url %}
-    {{ listing.image_url }}
-    {% endif %}
-    {% if listing.image_file %}
-    <img src="media/{{ listing.image_file }}">
-    {% endif %}
-
 
     {% endfor %}
     <ul>

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Auction_Listings, User, Bids
-from .forms import Auction_ListingsForm, WatchListForm, BidsForm
+from .forms import Auction_ListingsForm, BidsForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,7 +12,6 @@ def index(request):
     listings = Auction_Listings.objects.all()    
     return render(request, "auctions/index.html", { 
                                                    "listings":listings,
-                                                   #"auctions_auction_listings.quantity": 1
                                                    })
 def login_view(request):
     if request.method == "POST":
@@ -98,24 +97,6 @@ def detail_listing(request, id):
                                                    "all_wish": all_wish
                                                    })
 
-def watch(request, id):
-    listing = Auction_Listings.objects.get(id=id)    
-    form = Auction_ListingsForm   
-    if request.method == 'POST':
-        form = WatchListForm(request.POST, request.FILES)
-        if form.is_valid():             
-            listing.save()            
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            form = WatchListForm()
-    else:
-        form = WatchListForm()        
-       
-    return render(request, "auctions/watch.html", {
-        "form" : form
-    })
-
-
 def watchlist(request):
     logged_in_user = User.objects.get(id=request.user.id)
     all_wish = logged_in_user.wishlisted.all()
@@ -164,19 +145,21 @@ def unwatch_this(request,id):
 def bid(request, id):
     AL = Auction_ListingsForm   
     bids = BidsForm()
+    st_bid = Bids
     if request.method == 'POST':
         bids = BidsForm(request.POST)
         print(bids)
+        print(st_bid)
+        print(st_bid.starting_bid)
         current_bid = bids.cleaned_data["current_bid"]
+        starting_bid = st_bid.starting_bid
 
-        if current_bid > AL.starting_bid: 
+        if current_bid > starting_bid:
             if bids.is_valid():             
                 bids.save()            
             return HttpResponseRedirect(reverse("index"))
         else:
             bids = BidsForm()
-    else:
-        bids = BidsForm()        
        
     return render(request, "auctions/watch.html", {
         "bids" : bids

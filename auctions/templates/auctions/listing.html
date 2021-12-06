@@ -28,6 +28,11 @@
     {{ bids }}
         <form action="{% url 'bid' listing.id %}" method="post">
         {% csrf_token %}
+        {{ bids.as_p }}
+        {{ bids }}
+        <div class="form-group">
+            <input class="form-control" autofocus type="number" name="current_bid" placeholder="How much do you want to bid?">
+        </div>
         <input class="btn btn-secondary" type="submit" value="Bid on this">
         </form>
 

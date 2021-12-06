@@ -11,7 +11,6 @@
     TODO: Make listings clickable
     <ul>
     {% for listing in listings %} 
-    <h1> <li>{{ listing.title }}</li></h1> 
     <h1> <li> <a href="{% url 'detail' listing.id %}"> {{ listing.title }} </a></li></h1> 
     <p> {{ listing.description }} </p>
     <h2> {{ listing.startin_bid }} </h3>

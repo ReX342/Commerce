@@ -9,7 +9,6 @@
     {% endif %}
     <ul>
     {% for listing in listings %} 
-            <h1> <li>{{ listing.title }}</li></h1> 
             <h1> <li> <a href="{% url 'detail' listing.id %}"> {{ listing.title }} </a></li></h1> 
             <form action="{% url 'remove_watch' listing.id %}" method="post">
                 {% csrf_token %}
