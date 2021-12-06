@@ -143,6 +143,7 @@ def unwatch_this(request,id):
 
 @login_required
 def bid(request, id):
+    logged_in_user = User.objects.get(id=request.user.id)
     AL = Auction_ListingsForm   
     bids = BidsForm()
     st_bid = Bids
