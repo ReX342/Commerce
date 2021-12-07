@@ -37,6 +37,7 @@ class Auction_Listings(models.Model):
     
 class User(AbstractUser):
     wishlisted = models.ManyToManyField(Auction_Listings)
+    #bid = models.ManyToManyField(Bids)
     def __str__(self):
         return self.username 
     def __repr__(self):
