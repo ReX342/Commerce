@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Auction_Listings, User, Bids
+from .models import Auction_Listings, User, Bids, Bid
 from .forms import Auction_ListingsForm, BidsForm
 from django.contrib.auth.decorators import login_required
 
@@ -91,7 +91,8 @@ def create(request):
 def detail_listing(request, id):
     listing = Auction_Listings.objects.get(id=id)
     logged_in_user = User.objects.get(id=request.user.id)
-    all_wish = logged_in_user.wishlisted.all()    
+    all_wish = logged_in_user.wishlisted.all()
+    #bids = Bid.objects.filter(listing=listing1).order_by('-amount')      
     return render(request, "auctions/listing.html", { 
                                                    "listing": listing,
                                                    "all_wish": all_wish
@@ -202,3 +203,5 @@ def bid_this(request, id):
         f = Bids(current_bid="current_bid")
         f.save()
     return HttpResponseRedirect(reverse("index"))
+
+    
