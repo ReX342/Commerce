@@ -43,6 +43,15 @@ class User(AbstractUser):
     def __repr__(self):
         return f"<User '{self.username}>"
 
+
+class Bid(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField(null=False)
+    def __repr__(self):
+        return f"<Bid '{self.user.username}' bid ' {self.amount} on {self.listing.title}'>"
+    
+
 class Bids(models.Model):
     starting_bid = models.PositiveIntegerField()
     current_bid = models.PositiveIntegerField()
@@ -50,7 +59,7 @@ class Bids(models.Model):
         return self.starting_bid
     
 class comments_AL(models.Model):
-    AL = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, related_name='auction_list', unique=True) 
+    AL = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE, related_name='auction_list', unique=True) 
     pass
 
 # I can't delete these untile I delete my dbase.

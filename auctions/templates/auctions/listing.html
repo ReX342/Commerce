@@ -27,8 +27,9 @@
     {{ bids }}
     {{ bids.current_bid }}
     {{ bids.starting_bid }}
-        <form action="{% url 'bid' listing.id %}" method="post">
+        <form action="{% url 'bid_this' listing.id %}" method="post">
         {% csrf_token %}
+        {{ form }}
         {{ bids }}
         {{ bids.current_bid }}
         {{ bids.starting_bid }}

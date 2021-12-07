@@ -190,3 +190,15 @@ def bid(request, id):
     return render(request, "auctions/watch.html", {
         "bids" : bids
     })
+
+def bid_this(request, id):
+    logged_in_user = User.objects.get(id=request.user.id)
+    listing_id = id
+    # logged_in_user.bid.update(Auction_Listings.objects.get(id=listing_id))         
+    form = BidsForm(request.POST)
+    if form.is_valid():
+        current_bid = request.POST["current_bid"]             
+        #current_bid  = form.cleaned_data["current_bid"]
+        f = Bids(current_bid="current_bid")
+        f.save()
+    return HttpResponseRedirect(reverse("index"))
