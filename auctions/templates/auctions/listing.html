@@ -21,15 +21,17 @@
     <hr>
     Starting bid was: {{ listing.starting_bid }}
     <br>
-    bid {{ bids }} <br>
-    highest bid {{ high }}  <br>
-    user {{ user }} <br>
-    host {{ listing.host }} <br>
     {% if not listing.active %}
         {% if not high.user %}
-        Auction ended without a winner.
-        {% else %}
-        Auction is closed: Winner is {{ high.user }} with {{ high.amount }}
+            Auction ended without a winner.
+            {% else %}
+            <br> Auction is closed
+            {% if high.user == user %}
+            <br> You ( {{ high.user }} ) are the winner is with {{ high.amount }} !
+            {% else %}
+            <br> Better luck next time!
+            {% endif %}
+
         {% endif %}
     {% else %}
         {% if listing.host == user %}
