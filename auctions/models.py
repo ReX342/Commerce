@@ -53,24 +53,10 @@ class Bid(models.Model):
     def __repr__(self):
         return f"<Bid '{self.user.username}' bid ' {self.amount} on {self.listing.title}'>"
     
-
-class Bids(models.Model):
-    starting_bid = models.PositiveIntegerField()
-    current_bid = models.PositiveIntegerField()
-    def __str__(self):
-        return self.starting_bid
-    
+  
 class comments_AL(models.Model):
     AL = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE, related_name='auction_list', unique=True) 
     user = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
     comment = models.CharField(max_length=2000)
     def __str__(self):
         return self.AL   
-
-
-# I can't delete these untile I delete my dbase.
-class WatchList(models.Model):
-    auction = models.ForeignKey('Auction_Listings', on_delete=models.CASCADE, unique=True) 
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-    watching = models.BooleanField(default=False)
-    date_added = models.DateTimeField(auto_now_add=True, blank=True)
