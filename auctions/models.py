@@ -56,7 +56,7 @@ class Bid(models.Model):
   
 class comments_AL(models.Model):
     AL = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE, related_name='auction_list') 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     comment = models.CharField(max_length=2000)
     def __str__(self):
         return self.AL   
