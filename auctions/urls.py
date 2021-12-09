@@ -18,5 +18,7 @@ urlpatterns = [
     path("unwatch_this/<int:id>", views.unwatch_this, name="unwatch_this"),
     path("bid/<int:id>", views.bid, name="bid"),
     path("bids/<int:id>", views.bids, name="bids"),
-    path("bid_this/<int:id>", views.bid_this, name="bid_this")
+    path("bid_this/<int:id>", views.bid_this, name="bid_this"),
+    path("compare_bids/<int:id>", views.compare_bids, name="compare_bids"),
+    path('placebid/<int:id>', views.placebid, name="placebid")
 ]

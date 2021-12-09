@@ -6,7 +6,7 @@ from django.urls import reverse
 from .models import Auction_Listings, User, Bids, Bid
 from .forms import Auction_ListingsForm, BidsForm
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
 
 def index(request):
     listings = Auction_Listings.objects.all()    
@@ -92,10 +92,12 @@ def detail_listing(request, id):
     listing = Auction_Listings.objects.get(id=id)
     logged_in_user = User.objects.get(id=request.user.id)
     all_wish = logged_in_user.wishlisted.all()
-    #bids = Bid.objects.filter(listing=listing1).order_by('-amount')      
+    bids = Bid.objects.filter(listing=id).order_by('-amount')
+    print(bids)
     return render(request, "auctions/listing.html", { 
                                                    "listing": listing,
-                                                   "all_wish": all_wish
+                                                   "all_wish": all_wish,
+                                                   "bids": bids
                                                    })
 
 def watchlist(request):
@@ -204,4 +206,59 @@ def bid_this(request, id):
         f.save()
     return HttpResponseRedirect(reverse("index"))
 
+def compare_bids(request):
+    if request == "POST":
+        bids = request.POST(Bids)
+        if bids.current_bid > bids.starting_bid:
+            current_bid = bids.current_bid
+            current_bid.save()
+        else:
+            # Message user (in a more user friendly way)
+            return HttpResponse("Your opening bid must be higher")
+        return HttpResponseRedirect(reverse("index"))
     
+@login_required
+def placebid(request, id):
+#     user = User.objects.get(id=request.user.id)
+#     bid = Bid.objects.get(id=id)
+#     auctions = Bid.listing.get(id=id)
+#     amount = Bid.objects.get(amount=Bid.amount)
+#     bid.amount = amount
+#     if amount > bid.listing.starting_bid:
+# #if request.method == 'POST':
+#         amount = request.POST['amount']
+#         bid = Bid(request.POST)
+#    else:
+    messages.info(request, "Your bid must be higher than starting bid")
+    #listing = request.POST['listing']       
+#else:
+#     bid.save() 
+    return HttpResponseRedirect(reverse("index"))
+
+# Bid.objects.order_by('amount')
+ 
+
+
+# form action="/place_bid"
+
+# <input type="hidden" name="listing_id" value="{{ listing.id }}">
+# <input type="text" name="amount">
+
+# --- in views
+
+# place_bid function
+
+# Nodig
+# - Huidige gebruiker (te vinden in request.user dacht ik?)
+# - Huidige bod amount (te vinden in request.POST['amount']
+# - Huidige listing id, om de effectieve listing te kunnen terugvinden. (te vinden in request.POST['amount']
+
+# Stappen
+# 1) Haal listing op aan de hand van id
+# 2) Haal bids op van de listing (sorteer op amount)
+# 3) ....
+
+# Einde van de fucntie moet een redirect zijn naar de listing.
+# Er zijn twee uitkomsten
+# - bid gelukt yay
+# - bid niet gelukt, geef de gebruiker een melding waarom. (not authenticated, amount too low ...)

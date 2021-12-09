@@ -25,16 +25,16 @@
     {% else %}
     Bid 
     {{ bids }}
-    {{ bids.current_bid }}
-    {{ bids.starting_bid }}
         <form action="{% url 'placebid' listing.id %}" method="post">
         {% csrf_token %}
-        {{ form }}
-        {{ bids }}
-        {{ bids.current_bid }}
-        {{ bids.starting_bid }}
-        
-        <div class="form-group">
+         <div class="form-group">
+            <input type="hidden" name="listing_id" value="{{ listing.id }}">
+            <input type="number" name="amount">        
+        </div>
+        <input class="btn btn-secondary" type="submit" value="Bid on this rag">
+        </form>
+
+        <div class="form-group">      
             <input type="hidden" name="starting_bid" value="{{bids.starting_bid}}">
             <input class="form-control" autofocus type="number" name="{{bids.current_bid}}" placeholder="How much do you want to bid?">
         </div>
