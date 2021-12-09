@@ -219,23 +219,21 @@ def compare_bids(request):
     
 @login_required
 def placebid(request, id):
-#     user = User.objects.get(id=request.user.id)
-#     bid = Bid.objects.get(id=id)
-#     auctions = Bid.listing.get(id=id)
-#     amount = Bid.objects.get(amount=Bid.amount)
-#     bid.amount = amount
-#     if amount > bid.listing.starting_bid:
-# #if request.method == 'POST':
-#         amount = request.POST['amount']
-#         bid = Bid(request.POST)
-#    else:
-    messages.info(request, "Your bid must be higher than starting bid")
-    #listing = request.POST['listing']       
-#else:
-#     bid.save() 
+    auction = Auction_Listings.objects.get(id=id)
+    bid = Bid(listing=auction, user=User.objects.get(id=request.user.id), amount=int(request.POST['amount']))
+    if bid.amount > auction.starting_bid:
+        bid.save()
+    else:
+        messages.info(request, "Your bid must be higher than starting bid")
+    all_bids = Bid.objects.filter(listing=auction).order_by('-amount')
+    if len(all_bids) > 0:
+        all_bids[0]
+        if bid.amount > all_bids[0]:
+            bid.save()
+        else:
+            messages.info(request, f"Your bid must be above the previous bid ({all_bids[0]}) ")
     return HttpResponseRedirect(reverse("index"))
 
-# Bid.objects.order_by('amount')
  
 
 
