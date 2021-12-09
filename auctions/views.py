@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Auction_Listings, User, Bids, Bid
+from .models import Auction_Listings, User, Bids, Bid, comments_AL
 from .forms import Auction_ListingsForm, BidsForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -180,3 +180,19 @@ def end_auction(request, id):
     else:
         messages.info(request, "Only the person placing the auction should have seen the option to end the auction")
     return HttpResponseRedirect(reverse("index"))
+
+@login_required
+def comment(request, id):
+    auction = Auction_Listings.objects.get(id=id)
+    print(auction)
+    if request.method == 'POST':
+        comment = comments_AL(AL=auction, user=User.objects.get(id=request.user.id), comment=str(request.POST['comment']))
+        print(comment)
+        print(auction)
+        print(User.objects.get(id=request.user.id))
+        print(request.POST['comment'])
+        comment.save()
+    else:
+        comments = comments_AL.comment_set.all()
+        return HttpResponseRedirect(reverse("detail", kwargs={"id":id }))
+    return HttpResponseRedirect(reverse("index", kwargs={"id":id }))

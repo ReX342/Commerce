@@ -2,6 +2,19 @@
 
 {% block body %}
     <h2>All Details of Selected Listing</h2>
+    <hr>
+    error: <p>Cannot assign "User 'ReX": "comments_AL.user" must be a "Auction_Listings" instance.</p>
+
+    <form action="{% url 'comment' listing.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="al" value="{{AL}}">
+        <input type="hidden" name="user" value="{{user}}">
+        <div class="form-group">
+            <input class="form-control" type="text" name="comment" placeholder="comment">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Submit Comment">
+    </form>
+    <hr>
 
     {% if message %}
         <div>{{ message }}</div>
@@ -66,7 +79,6 @@
         <input class="btn btn-primary" type="submit" value="Add to watchlist">
     </form>
     {% endif %}
-
 
     {% if listing.image_url %}
     {{ listing.image_url }}

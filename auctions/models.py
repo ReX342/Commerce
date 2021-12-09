@@ -62,7 +62,11 @@ class Bids(models.Model):
     
 class comments_AL(models.Model):
     AL = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE, related_name='auction_list', unique=True) 
-    pass
+    user = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=2000)
+    def __str__(self):
+        return self.AL   
+
 
 # I can't delete these untile I delete my dbase.
 class WatchList(models.Model):
