@@ -24,25 +24,14 @@
     {% if inactive %}
     {% else %}
     Bid 
-    {{ bids }}
         <form action="{% url 'placebid' listing.id %}" method="post">
         {% csrf_token %}
          <div class="form-group">
             <input type="hidden" name="listing_id" value="{{ listing.id }}">
-            <input type="number" name="amount">        
-        </div>
-        <input class="btn btn-secondary" type="submit" value="Bid on this rag">
-        </form>
-
-        <div class="form-group">      
-            <input type="hidden" name="starting_bid" value="{{bids.starting_bid}}">
-            <input class="form-control" autofocus type="number" name="{{bids.current_bid}}" placeholder="How much do you want to bid?">
+            <input autofocus type="number" name="amount">        
         </div>
         <input class="btn btn-secondary" type="submit" value="Bid on this">
         </form>
-
-        else: You have to bid more than the initial bid.
-
     {% endif %}
     <hr>
     First Listed on: {{ listing.date_posted }}
