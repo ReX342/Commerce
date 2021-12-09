@@ -3,8 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Auction_Listings, User, Bids, Bid, comments_AL
-from .forms import Auction_ListingsForm, BidsForm
+from .models import Auction_Listings, User, Bid, comments_AL
+from .forms import Auction_ListingsForm, comments_ALForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -67,7 +67,6 @@ def register(request):
 @login_required
 def create(request):
     form = Auction_ListingsForm   
-    #    
     if request.method == 'POST':
         form = Auction_ListingsForm(request.POST, request.FILES)
         if form.is_valid():             
@@ -183,16 +182,22 @@ def end_auction(request, id):
 
 @login_required
 def comment(request, id):
+    form = comments_ALForm   
     auction = Auction_Listings.objects.get(id=id)
-    print(auction)
     if request.method == 'POST':
+        form = comments_ALForm(request.POST)
         comment = comments_AL(AL=auction, user=User.objects.get(id=request.user.id), comment=str(request.POST['comment']))
-        print(comment)
-        print(auction)
-        print(User.objects.get(id=request.user.id))
-        print(request.POST['comment'])
         comment.save()
+        if form.is_valid():             
+            comment  = form.cleaned_data["comment"]            
+            listing = comments_AL(comment=comment)
+            listing.save()            
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            form = comments_ALForm()
     else:
         comments = comments_AL.comment_set.all()
         return HttpResponseRedirect(reverse("detail", kwargs={"id":id }))
     return HttpResponseRedirect(reverse("index", kwargs={"id":id }))
+
+            
