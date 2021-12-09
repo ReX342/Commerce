@@ -21,9 +21,24 @@
     <hr>
     Starting bid was: {{ listing.starting_bid }}
     <br>
-    {% if inactive %}
+    bid {{ bids }} <br>
+    highest bid {{ high }}  <br>
+    user {{ user }} <br>
+    host {{ listing.host }} <br>
+    {% if not listing.active %}
+        {% if not high.user %}
+        Auction ended without a winner.
+        {% else %}
+        Auction is closed: Winner is {{ high.user }} with {{ high.amount }}
+        {% endif %}
     {% else %}
-    Bid 
+        {% if listing.host == user %}
+        <form action="{% url 'end_auction' listing.id %}">
+            {% csrf_token %}
+            <input class="btn btn-secondary" type="submit" value="End Auction">
+        </form>
+        {% endif %}
+        Bidding is open: 
         <form action="{% url 'placebid' listing.id %}" method="post">
         {% csrf_token %}
          <div class="form-group">

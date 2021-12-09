@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 def index(request):
-    listings = Auction_Listings.objects.all()    
+    listings = Auction_Listings.objects.filter(active=True)    
     return render(request, "auctions/index.html", { 
                                                    "listings":listings,
                                                    })
@@ -76,7 +76,7 @@ def create(request):
             starting_bid = form.cleaned_data["starting_bid"]
             image_url = form.cleaned_data["image_url"]
             image_file = form.cleaned_data["image_file"]            
-            listing = Auction_Listings(title=title, description=description, starting_bid=starting_bid, image_url=image_url, image_file=image_file)
+            listing = Auction_Listings(title=title, description=description, starting_bid=starting_bid, image_url=image_url, image_file=image_file, host=request.user)
             listing.save()            
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -92,12 +92,17 @@ def detail_listing(request, id):
     listing = Auction_Listings.objects.get(id=id)
     logged_in_user = User.objects.get(id=request.user.id)
     all_wish = logged_in_user.wishlisted.all()
-    bids = Bid.objects.filter(listing=id).order_by('-amount')
+    bids = Bid.objects.filter(listing=listing).order_by('-amount')
     print(bids)
+    if len(bids) > 0:
+        highest_bid = bids[0]
+    else:
+        highest_bid = None
     return render(request, "auctions/listing.html", { 
                                                    "listing": listing,
                                                    "all_wish": all_wish,
-                                                   "bids": bids
+                                                   "bids": bids,
+                                                   "high": highest_bid
                                                    })
 
 def watchlist(request):
@@ -151,14 +156,27 @@ def placebid(request, id):
     bid = Bid(listing=auction, user=User.objects.get(id=request.user.id), amount=int(request.POST['amount']))
     all_bids = Bid.objects.filter(listing=auction).order_by('-amount')
     if bid.amount > auction.starting_bid:
+        # IF there are several/at least one bids
         if len(all_bids) > 0:
+            # grab highest bid
             highest_bid = all_bids[0]
             if bid.amount > highest_bid.amount:
                 bid.save()
             else:
-                messages.info(request, f"Your bid must be above the previous bid ({highest_bid.amount}) ")
+                messages.info(request, f"Your bid must be above the previous bid ({highest_bid.amount}) ")        
+        else: # There are no other earlier bids: First bid
+            bid.save()
     else:
         messages.info(request, "Your bid must be higher than starting bid")
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("detail", kwargs={'id':id}))
 
- 
+@login_required
+def end_auction(request, id):
+    auction = Auction_Listings.objects.get(id=id)
+    if auction.host == request.user:
+        auction.active = False
+        auction.save()
+        messages.info(request, "Auction ended!")
+    else:
+        messages.info(request, "Only the person placing the auction should have seen the option to end the auction")
+    return HttpResponseRedirect(reverse("index"))
