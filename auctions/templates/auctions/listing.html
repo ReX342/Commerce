@@ -17,6 +17,9 @@
     <hr>
     {{ comments }}
     <hr>
+    {% for comment in comments %}
+    {{ comment }}
+    {% endfor %}
 
     {% if message %}
         <div>{{ message }}</div>

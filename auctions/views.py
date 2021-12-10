@@ -193,19 +193,20 @@ def comment(request, id):
         #comment.save()
         if form.is_valid():             
             comment  = form.cleaned_data["comment"]
+            comment.comment.add(comments_AL.objects.get(id=request.user.id))         
             comment.save()    
             listing = comments_AL(comment=comment)
-            listing.save()            
+            listing.comment.save()            
             return HttpResponseRedirect(reverse("detail", kwargs={"id":id}))
         else:
             form = comments_ALForm()
-    return render(request, "auctions/listing.html", {
-        "form" : form,
-        "comment": comment,
-    })  
+    # return render(request, "auctions/listing.html", {
+    #     "form" : form,
+    #     "comment": comment,
+    # })  
     #else:
     #    comments = comments_AL.comment_set.all()
     #    return HttpResponseRedirect(reverse("detail", kwargs={"id":id }))
     #return HttpResponseRedirect(reverse("index", kwargs={"id":id }))
-
+    return HttpResponseRedirect(reverse("index"))
             
