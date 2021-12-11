@@ -206,13 +206,11 @@ def categories(request):
                                                 
                                                 })
 
+@login_required
 def cat_list(request, abbr):
-    listings = []
-    listings = Auction_Listings.objects.all() #listings with abbr
-    print(listings[0].category)
-    for c in listings:
-        print(c.category)
+    listings = Auction_Listings.objects.filter(category=abbr)
     return render(request, "auctions/category.html", { 
                                                 "listings": listings,
+                                                "abbr" : abbr
                                                 })
     
