@@ -96,11 +96,13 @@ def detail_listing(request, id):
         highest_bid = bids[0]
     else:
         highest_bid = None
+    comments = comments_AL.objects.filter(AL=listing).order_by('date_added')
     return render(request, "auctions/listing.html", { 
                                                    "listing": listing,
                                                    "all_wish": all_wish,
                                                    "bids": bids,
-                                                   "high": highest_bid
+                                                   "high": highest_bid,
+                                                   "comments": comments
                                                    })
 
 def watchlist(request):
@@ -177,28 +179,6 @@ def end_auction(request, id):
         messages.info(request, "Auction ended!")
     else:
         messages.info(request, "Only the person placing the auction should have seen the option to end the auction")
-    return HttpResponseRedirect(reverse("index"))
-
-@login_required
-def comment(request, id):
-    form = comments_ALForm   
-    auction = Auction_Listings.objects.get(id=id)
-    #all_comments = form.comment.all()
-    comment = comments_AL(AL=auction, user=User.objects.get(id=request.user.id), comment=request.POST['comment'])
-    all_comments = comments_AL.objects.filter(AL=auction)
-    if request.method == 'POST':
-        form = comments_ALForm(request.POST)
-        comment = comments_AL(AL=auction, user=User.objects.get(id=auction.id), comment=request.POST['comment'])
-        #comment.save()
-        if form.is_valid():             
-            comment  = form.cleaned_data["comment"]
-            comment.comment.add(comments_AL.objects.get(id=request.user.id))         
-            comment.save()    
-            listing = comments_AL(comment=comment)
-            listing.comment.save()            
-            return HttpResponseRedirect(reverse("detail", kwargs={"id":id}))
-        else:
-            form = comments_ALForm()
     return HttpResponseRedirect(reverse("index"))
 
 @login_required
