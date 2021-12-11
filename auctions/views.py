@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Auction_Listings, User, Bid, comments_AL
-from .forms import Auction_ListingsForm, comments_ALForm
+from .forms import Auction_ListingsForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -32,11 +32,9 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -74,8 +72,9 @@ def create(request):
             description = form.cleaned_data["description"]
             starting_bid = form.cleaned_data["starting_bid"]
             image_url = form.cleaned_data["image_url"]
+            category = form.cleaned_data["category"]
             image_file = form.cleaned_data["image_file"]            
-            listing = Auction_Listings(title=title, description=description, starting_bid=starting_bid, image_url=image_url, image_file=image_file, host=request.user)
+            listing = Auction_Listings(title=title, description=description, starting_bid=starting_bid, image_url=image_url, image_file=image_file, host=request.user, category=category )
             listing.save()            
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -111,6 +110,7 @@ def watchlist(request):
     return render(request, "auctions/watchlist.html", { 
                                                 "listings": all_wish,
                                                 })
+    
 @login_required
 def add_watch(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
@@ -183,9 +183,36 @@ def end_auction(request, id):
 
 @login_required
 def new_comment(request, id):
-    listing_id = id
-    form = comments_ALForm()
     auction = Auction_Listings.objects.get(id=id)
     comment = comments_AL(AL=auction, user=User.objects.get(id=request.user.id), comment=request.POST['comment'])
     comment.save()
     return HttpResponseRedirect(reverse("detail", kwargs={"id":id}))
+
+@login_required
+def categories(request):
+    listings = Auction_Listings.objects.all()
+    logged_in_user = User.objects.get(id=request.user.id)
+    all_wish = logged_in_user.wishlisted.all()
+    categories = []
+    for category in  Auction_Listings.CATEGORIES:
+        categories.append({
+            "name": category[1],
+            "abbr": category[0]
+        }) 
+    return render(request, "auctions/categories.html", { 
+                                                "listings":listings,
+                                                "all_wish": all_wish,
+                                                "categories": categories,
+                                                
+                                                })
+
+def cat_list(request, abbr):
+    listings = []
+    listings = Auction_Listings.objects.all() #listings with abbr
+    print(listings[0].category)
+    for c in listings:
+        print(c.category)
+    return render(request, "auctions/category.html", { 
+                                                "listings": listings,
+                                                })
+    
