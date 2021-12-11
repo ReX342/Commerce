@@ -56,11 +56,11 @@ class Bid(models.Model):
   
 class comments_AL(models.Model):
     AL = models.ForeignKey(Auction_Listings, on_delete=models.CASCADE, related_name='auction_list') 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     comment = models.TextField(max_length=2000)
     date_added = models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self):
-        return self.AL.title   
+        return f" User {self.user} commented on {self.AL.title}: {self.comment}"
     def __repr__(self):
         return self.AL.title
     

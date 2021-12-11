@@ -92,7 +92,6 @@ def detail_listing(request, id):
     logged_in_user = User.objects.get(id=request.user.id)
     all_wish = logged_in_user.wishlisted.all()
     bids = Bid.objects.filter(listing=listing).order_by('-amount')
-    print(bids)
     if len(bids) > 0:
         highest_bid = bids[0]
     else:
@@ -200,13 +199,13 @@ def comment(request, id):
             return HttpResponseRedirect(reverse("detail", kwargs={"id":id}))
         else:
             form = comments_ALForm()
-    # return render(request, "auctions/listing.html", {
-    #     "form" : form,
-    #     "comment": comment,
-    # })  
-    #else:
-    #    comments = comments_AL.comment_set.all()
-    #    return HttpResponseRedirect(reverse("detail", kwargs={"id":id }))
-    #return HttpResponseRedirect(reverse("index", kwargs={"id":id }))
     return HttpResponseRedirect(reverse("index"))
-            
+
+@login_required
+def new_comment(request, id):
+    listing_id = id
+    form = comments_ALForm()
+    auction = Auction_Listings.objects.get(id=id)
+    comment = comments_AL(AL=auction, user=User.objects.get(id=request.user.id), comment=request.POST['comment'])
+    comment.save()
+    return HttpResponseRedirect(reverse("detail", kwargs={"id":id}))

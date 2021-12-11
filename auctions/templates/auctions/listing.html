@@ -4,15 +4,15 @@
     <h2>All Details of Selected Listing</h2>
     <hr>
     error: <p>Cannot assign "User 'ReX": "comments_AL.user" must be a "Auction_Listings" instance.</p>
-    <form action="{% url 'comment' listing.id %}" method="post">
+    <form action="{% url 'new_comment' listing.id %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="AL">
         <input type="hidden" name="user">
         <div class="form-group">
             <input class="form-control" type="text" name="comment" placeholder="comment">
         </div>
-        {{ form }}
         <input class="btn btn-primary" type="submit" value="Submit Comment">
+        {{ form }}
     </form>
     <hr>
     {{ comments }}

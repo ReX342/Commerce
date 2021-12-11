@@ -18,5 +18,8 @@ urlpatterns = [
     path("unwatch_this/<int:id>", views.unwatch_this, name="unwatch_this"),
     path('placebid/<int:id>', views.placebid, name="placebid"),
     path('end_auction/<int:id>', views.end_auction, name="end_auction"),
-    path('comment/<int:id>', views.comment, name="comment")
+    path('comment/<int:id>', views.comment, name="comment"),
+    path('new_comment/<int:id>', views.new_comment, name="new_comment"),
+    path('auction/<int:pk>add_comment', views.add_comment, name="add_comment")
+
 ]
